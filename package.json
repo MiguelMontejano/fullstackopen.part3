@@ -4,6 +4,8 @@
   "description": "Ejercicios de la parte 3 del fullstackopen",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -12,7 +14,10 @@
   },
   "author": "Miguel Montejano",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/MiguelMontejano/fullstackopen.part3/issues"
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
