@@ -1,8 +1,15 @@
 const {request, response} = require('express')
 const express = require('express')
+const morgan = require('morgan')
+
 const app = express()
 
+//Token personalizado
+morgan.token('body'/*Name of token*/, (request) => JSON.stringify(request.body))
+
+//Middlewares
 app.use(express.json())
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 let persons = [
     {
