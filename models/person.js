@@ -18,7 +18,7 @@ const personSchema = new mongoose.Schema({
     number: String,
 })
 
-personSchema.set('toJSON', {
+personSchema.set('toJSON', { //De esta manera cuando devolvamos un objeto parseado como JSON tendremos el atributo id (necesario en las llamadas desde el front end) y no tendremos los otros atributos que añade mongo
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString()
         delete returnedObject._id
