@@ -59,6 +59,21 @@ app.delete('/api/persons/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
+app.put('/api/persons/:id', (request, response, next) => {
+    const body = request.body
+
+    const person = {
+        name: body.name,
+        number: body.number,
+    }
+
+    Person.findByIdAndUpdate(request.params.id, person, {new: true})
+        .then(updatedPhone => {
+            response.json(updatedPhone)
+        })
+        .catch(error => next(error))
+})
+
 //Manejador de errores, son middlewares que aceptan 4 parametros, esto lo tenemos que poner siempre abajo de 
 //de los metodos que lo pueden llamar, si no no tendrá efecto
 const errorHandler = (error, request, response, next) => {
