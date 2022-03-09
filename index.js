@@ -74,6 +74,21 @@ app.put('/api/persons/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
+app.post('/api/persons', (request, response, next) => {
+    const body = request.body
+
+    const person = new Person({
+        name: body.name,
+        number: body.number
+    })
+
+    person.save()
+        .then(savedPerson => {
+            response.json(savedPerson)
+        })
+        .catch(error => next(error))
+})
+
 //Manejador de errores, son middlewares que aceptan 4 parametros, esto lo tenemos que poner siempre abajo de 
 //de los metodos que lo pueden llamar, si no no tendrá efecto
 const errorHandler = (error, request, response, next) => {
@@ -81,31 +96,16 @@ const errorHandler = (error, request, response, next) => {
 
     if(error.name === 'CastError'){ //Error por id no valido para Mongo
         return response.status(400).send({error: 'malformatted id'})
+    }else if(error.name === 'ValidationError'){
+        return response.status(400).json({error: error.message})
+    }else if(error.name === 'MongoServerError'){
+        return response.status(400).json({error: error.message})
     }
 
     next(error)//Pasamos el error al controlador de errores de Express predeterminado
 }
 
 app.use(errorHandler)
-
-app.post('/api/persons', (request, response) => {
-    const body = request.body
-
-    if(!body.name || !body.number){
-        return response.status(400).json({
-            error: "name or number missing"
-        })
-    }
-
-    const person = new Person({
-        name: body.name,
-        number: body.number
-    })
-
-    person.save().then(savedPerson => {
-        response.json(savedPerson)
-    })
-})
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {

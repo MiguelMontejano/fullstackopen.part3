@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 //TODO: Not save password to github
 const url = process.env.MONGODB_URI
@@ -14,8 +15,16 @@ mongoose.connect(url)
     })
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String,
+    name: {
+        type: String,
+        minlength: 4,
+        required: true,
+        unique: true
+    },
+    number: {
+        type:String,
+        required: true
+    },
 })
 
 personSchema.set('toJSON', { //De esta manera cuando devolvamos un objeto parseado como JSON tendremos el atributo id (necesario en las llamadas desde el front end) y no tendremos los otros atributos que añade mongo
